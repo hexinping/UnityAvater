@@ -1,3 +1,5 @@
 Library
 .DS_Store
 .vs
+obj/Debug/
+Temp/

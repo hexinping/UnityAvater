@@ -72,7 +72,8 @@ public class Main : MonoBehaviour {
 		hand_list [DEFAULT_HAND] = true;
 		feet_list [DEFAULT_FEET] = true;
 
-        // create an avatar
+		// create an avatar
+		//"ch_pc_hou" 单独的骨骼prefab
 		character = App.Game.CharacterMgr.Generatecharacter (
 			"ch_pc_hou", 
 			"ch_we_one_hou_" + index[DEFAULT_WEAPON],

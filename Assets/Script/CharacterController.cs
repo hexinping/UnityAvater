@@ -33,7 +33,7 @@ public class UCharacterController {
 
 	public UCharacterController (int index,string skeleton, string weapon, string head, string chest, string hand, string feet, bool combine = false) {
 
-		//Creates the skeleton object
+		//Creates the skeleton object 先创建骨骼prefrab对应的GameObject对象
 		Object res = Resources.Load ("Prefab/" + skeleton);
 		this.Instance = GameObject.Instantiate (res) as GameObject;
 		this.index = index;
@@ -49,7 +49,7 @@ public class UCharacterController {
 		equipments [2] = hand;
 		equipments [3] = feet;
 		
-        // Create and collect other parts SkinnedMeshRednerer
+        // Create and collect other parts SkinnedMeshRednerer  创建模型的其他部位，只是单纯的先创建出来拿到对应的合并信息，后面回删除
 		SkinnedMeshRenderer[] meshes = new SkinnedMeshRenderer[4];
 		GameObject[] objects = new GameObject[4];
 		for (int i = 0; i < equipments.Length; i++) {
@@ -59,7 +59,7 @@ public class UCharacterController {
 			meshes[i] = objects[i].GetComponentInChildren<SkinnedMeshRenderer> ();
 		}
 		
-        // Combine meshes
+        // Combine meshes 
 		App.Game.CharacterMgr.CombineSkinnedMgr.CombineObject (Instance, meshes, combine);
 
         // Delete temporal resources
@@ -69,6 +69,7 @@ public class UCharacterController {
 		}
 		
 		// Create weapon
+		//武器是单独使用meshRender，没有骨骼数据所以没有合并
 		res = Resources.Load ("Prefab/" + weapon);
 		WeaponInstance = GameObject.Instantiate (res) as GameObject;
 		
