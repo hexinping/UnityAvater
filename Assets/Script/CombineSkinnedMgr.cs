@@ -82,10 +82,20 @@ public class UCombineSkinnedMgr {
 			texW = Get2Pow(texW);
 			texH = Get2Pow(texH);
 			newDiffuseTex = new Texture2D(texW, texH, TextureFormat.RGBA32, true);
+			newDiffuseTex.name = "dddddddddd";
+			Debug.Log($"before PackTexures==============={newDiffuseTex.format}");
+
+			//PackTextures接口需要原始图需要开启可读可写,
+			//PackTextures接口调用后，会修改newDiffuseTex的format，修改的结果跟需要打包的图的格式有关（保持一致）
+			//PackTextures接口运行时它不支持任意贴图格式的合并，比如现在主流的ASTC，它会合并成RGBA32格式
+
 			Rect[] uvs = newDiffuseTex.PackTextures(Textures.ToArray(), 0);
+			Debug.Log($"after PackTexures==============={newDiffuseTex.format}");
 			newMaterial.mainTexture = newDiffuseTex;
 
-            // reset uv 因为合并了贴图,需要重新计算新UV值
+			newDiffuseTex.GetRawTextureData();
+
+			// reset uv 因为合并了贴图,需要重新计算新UV值
 			Vector2[] uva, uvb;
 			for (int j = 0; j < combineInstances.Count; j++)
 			{
