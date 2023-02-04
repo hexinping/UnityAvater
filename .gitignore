@@ -3,3 +3,4 @@ Library
 .vs
 obj/Debug/
 Temp/
+.idea/

@@ -18,7 +18,7 @@ public class UCombineSkinnedMgr
 	/// Combine SkinnedMeshRenderers together and share one skeleton.
 	/// Merge materials will reduce the drawcalls, but it will increase the size of memory. 
 	/// </summary>
-	/// <param name="skeleton">combine meshes to this skeleton(a gameobject) 骨骼对象</param>
+	/// <param name="skeleton">combine meshes to this skeleton(a gameobject) 骨骼对象（骨骼prefab，只有transfrom组件）</param>
 	/// <param name="meshes">meshes need to be merged  需要合并的mesh，部件的mesh</param>
 	/// <param name="combine">merge materials or not</param>
 	public void CombineObject(GameObject skeleton, SkinnedMeshRenderer[] meshes, bool combine = false)
@@ -151,7 +151,7 @@ public class UCombineSkinnedMgr
 			//PackTextures接口需要原始图需要开启可读可写,
 			//PackTextures接口调用后，会修改newDiffuseTex的format，修改的结果跟需要打包的图的格式有关（保持一致）
 			//PackTextures接口运行时它不支持任意贴图格式的合并，比如现在主流的ASTC，它会合并成RGBA32格式
-
+			//PackTextures ==> 返回每张旧图在新图中的uv坐标
 			Rect[] uvs = newDiffuseTex.PackTextures(Textures.ToArray(), 0);
 			Debug.Log($"after PackTexures==============={newDiffuseTex.format}");
 			newMaterial.mainTexture = newDiffuseTex;
@@ -266,9 +266,8 @@ public class UCombineSkinnedMgr
                 break;
             case TextureFormat.DXT5:
             case TextureFormat.ETC2_RGBA8:
-            case TextureFormat.ASTC_RGB_4x4:
-            case TextureFormat.ASTC_RGBA_4x4:
-                blcokBytes = 16;
+            case TextureFormat.ASTC_4x4:
+	            blcokBytes = 16;
                 data = new byte[length * length];
                 break;
             default:
